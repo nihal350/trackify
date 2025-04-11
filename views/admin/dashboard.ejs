@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <title>Trackify</title>
+    <style>
+        #map {
+                min-height: 500px;
+                width: 100%; 
+            }
+    </style>
+</head>
+<body>
+    <%- include('../partials/admin-nav') %>
+    <div class="app">
+        <div class="row">
+            <div class="col-12 col-md-3 col-lg-2  order-2 order-md-1">
+                <%- include('../partials/admin-sidebar') %>
+            </div>
+            <div class="col-12 col-lg-9  col-lg-10 order-1 order-md-2">
+                <div class="page-view-area">
+                    <div class="nav-adjust"></div>
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-7">
+                            <div class="page-info-div">
+                                <h1 class="page-head">
+                                    Live Tracking 
+                                </h1>
+                                <p class="mt-2">
+                                    <a class="text-decoration-none text-dark" href="/admin">Home</a>&nbsp;>
+                                    <a class="text-decoration-none text-info" href="#">Live Tracking</a>
+                                </p>
+
+                                
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div id="map"></div>
+                    <p>Last known Location of Buses are shown when not on college Trips</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script >
+        document.getElementById('si0').classList.add('sidebar-item-active')
+    </script>
+     <script>
+         var map = L.map('map').setView([11.1668, 75.8768], 9); // Default: India
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var x = <%- JSON.stringify(buses) %> 
+
+        var points = []
+
+        x.forEach((i)=>{
+            console.log('hi')
+            points.push({
+                lat:i.location.lat,
+                lon:i.location.lon,
+                name:`${i.regNo}  (${i.busNo})`
+            })
+        })
+        
+          
+        
+
+        var latlngs = points.map(point => [point.lat, point.lon]);
+
+        points.forEach(point => {
+            L.marker([point.lat, point.lon])
+                .addTo(map)
+                .bindPopup(point.name);
+        });
+
+       
+        console.log(points)
+        // Fit map to route
+        map.fitBounds(polyline.getBounds());
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <title>Trackify</title>
+    
+  </head>
+  <body class="">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 offset-0 offset-md-3 offset-lg-4"></div>
+      </div>
+    </div>
+    <p class="cust-top-nav text-center">DRIVER DASHBOARD</p>
+    
+   
+    <div class="container" style="padding: 20px;">
+      <table class="table">
+        <tr>
+          <td>Register No</td>
+          <td><%=bus.regNo%></td>
+        </tr>
+        <tr>
+          <td>Bus Number</td>
+          <td><%=bus.busNo%></td>
+        </tr>
+        <tr>
+          <td>Route</td>
+          <td><%=bus.routeName%></td>
+        </tr>
+       
+      </table>
+    
+    </div>
+
+      <% if(bus.ongoingTrip){ %>
+        <div class="main-content-body">
+          <table class="table ">
+            <tr>
+              <th colspan="2" class="text-center">STOPS</th>
+            </tr>
+            <% bus.route.forEach((i)=>{ %>
+              <% if(!i.visited){ %>
+                <tr>
+                  <td class="text-dark"><%=i.location%> </td>
+                  <td><a href="/driver/visit/<%=i.id%>"><button class="btn">   <p class="icofont-tick-boxed nav-element-logo text-center" style="color: green;"></p></button></a></td>
+                </tr>
+              <% } %>
+            <%})%>
+            <tr>
+              <td colspan="2"><a href="/driver/stop"><button class="btn btn-success btn-block">REACHED COLLEGE</button></a></td>
+            </tr>
+            <% bus.route.forEach((i)=>{ %>
+              <% if(i.visited){ %>
+                <tr>
+                  <td class="text-secondary"><%=i.location%></td>
+                </tr>
+              <% } %>
+             
+            <%})%>
+          </table>
+        </div>
+      <% }else{ %>
+        <div class="main-content-body">
+          
+          <a href="/driver/start">
+            <button class="btn btn-block btn-success mt-4 mb-3">START TRIP</button>
+          </a>
+          <table class="table table-bordered">
+            <tr>
+              <th class="text-center">STOPS</th>
+            </tr>
+            <% bus.route.forEach((i)=>{ %>
+              <tr>
+                <td><%=i.location%></td>
+              </tr>
+            <%})%>
+          </table>
+        </div>
+      <% } %>
+     
+    
+  
+      <input type="hidden" id="busid" value="<%=bus.id%>">
+    <%- include('../partials/driver-navbar.ejs') %>
+
+    <script>
+      document.getElementById('bn1').classList.add('nav-element-body-selected')
+      setInterval(shareLocation,5000)
+
+
+
+      shareLocation()
+      function shareLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+        
+      function showPosition(position) {
+        let busid = document.getElementById('busid').value
+        fetch('/driver/location', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ busid:busid,lat:position.coords.latitude,lon:position.coords.longitude})
+        })
+        
+      }
+    </script>
+  </body>
+</html>

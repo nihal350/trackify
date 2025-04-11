@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <title>Trackify</title>
+   
+  </head>
+  <body class="">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 offset-0 offset-md-3 offset-lg-4"></div>
+      </div>
+    </div>
+   
+   
+    <p class="cust-top-nav text-center">REVIEW</p>
+    
+    
+ 
+    <div class="container pt-3" style="padding-bottom: 80px;">
+        <img src="/images/success.webp" style="width: 100%;margin-bottom: 20px;">
+        <% if(score==0){ %>
+          <h4 class="text-primary text-center">Neutral Review</h4>
+        <% }else if(score>0){ %>
+          <h4 class="text-success text-center">Positive Review</h4>
+        <% }else{ %>
+          <h4 class="text-danger text-center">Negative Review</h4>
+        <% } %>
+       
+        <p class="text-center mt-4">
+          <%=text%>
+        </p>
+
+        <p class="mt-5 text-center">
+          <a href="/user">
+            <button class="btn btn-outline-info">GO TO HOME</button>
+          </a>
+        </p>
+       
+    </div>
+  
+
+  
+
+    <%- include('../partials/user-navbar.ejs') %>
+
+    <script>
+      document.getElementById('bn3').classList.add('nav-element-body-selected')
+
+    
+    </script>
+  </body>
+</html>

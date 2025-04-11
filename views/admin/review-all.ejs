@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+    <title>Trackify</title>
+ 
+</head>
+<body>
+    <%- include('../partials/admin-nav') %>
+    <div class="app">
+        <div class="row">
+            <div class="col-12 col-md-3 col-lg-2  order-2 order-md-1">
+                <%- include('../partials/admin-sidebar') %>
+            </div>
+            <div class="col-12 col-lg-9  col-lg-10 order-1 order-md-2">
+                <div class="page-view-area">
+                    <div class="nav-adjust"></div>
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-7">
+                            <div class="page-info-div">
+                                <h1 class="page-head">
+                                    Reviews
+                                </h1>
+                                <p class="mt-2">
+                                    <a class="text-decoration-none text-dark" href="/admin">Home</a>&nbsp;>
+                                    <a class="text-decoration-none text-info" href="#">Reviews</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12 table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th>Bus</th>
+                                    <th>Driver</th>
+                                    <th>Sentiment</th>
+                                    <th>Review </th>
+                                </tr>
+                                <% reviews.forEach((i)=>{ %>
+                                    <% let x = buses.find((j)=> j.id == i.busid) %>
+                                    <tr>
+                                        <td><%=x.busNo%> - <%=x.regNo%></td>
+                                        <td><%=x.driver%></td>
+
+                                        <td>
+                                            <% if(i.score==0){ %>
+                                                <span class="text-primary">Neutral</span>
+                                            <% }else if(i.score>0){ %>
+                                                <span class="text-success">Positive</span>
+                                            <% }else{ %>
+                                                <span class="text-danger">Negative</span>
+                                            <% } %>
+                                            
+                                        </td>
+                                        <td><%=i.text%></td>
+                                        
+                                    </tr>
+                                <% }) %>
+                                       
+                            </table>
+                        </div>
+                       
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script >
+        document.getElementById('si3').classList.add('sidebar-item-active')
+    </script>
+</body>
+</html>

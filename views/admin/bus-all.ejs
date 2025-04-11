@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+    <title>Trackify</title>
+    <style>
+        .stat-box{
+            border-radius: 15px;
+            width: 100%;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+        }
+        .stats-head{
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .stats-count{
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/admin-nav') %>
+    <div class="app">
+        <div class="row">
+            <div class="col-12 col-md-3 col-lg-2  order-2 order-md-1">
+                <%- include('../partials/admin-sidebar') %>
+            </div>
+            <div class="col-12 col-lg-9  col-lg-10 order-1 order-md-2">
+                <div class="page-view-area">
+                    <div class="nav-adjust"></div>
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-7">
+                            <div class="page-info-div">
+                                <h1 class="page-head">
+                                    All Buses
+                                </h1>
+                                <p class="mt-2">
+                                    <a class="text-decoration-none text-dark" href="/admin">Home</a>&nbsp;>
+                                    <a class="text-decoration-none text-info" href="#">All Buses</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 mt-auto mb-auto">
+                            <a href="/admin/bus/add">
+                                <button class="btn btn-success btn-block" >ADD NEW BUS</button>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <% buses.forEach((i)=>{ %>
+                            <div class="col-12 col-sm-6 col-md-4 ">                         
+                                <div class="stat-box" style="background-color: rgb(222, 222, 222);">
+                                    <table class="table">
+                                        <tr>
+                                            <td colspan="2">
+                                                <p class="stats-head">Bus No : <%=i.busNo%></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Reg No</td>
+                                            <td><%=i.regNo%></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Driver</td>
+                                            <td><%=i.driver%></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Route</td>
+                                            <td><%=i.routeName%></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sentiment Score</td>
+                                            <td><%=i.score%></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status</td>
+                                            <td>
+                                                <% if(i.ongoingTrip){ %>
+                                                    <span class="text-success">On Trip</span>
+
+                                                <% }else{ %>
+                                                    <span class="text-primary">Currenty not in Trip</span>
+                                                <% } %>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                    <a href="/admin/bus/<%=i.id%>/edit">
+                                        <button class="btn btn-outline-info">Edit Bus</button>
+                                    </a>
+                     
+
+                                </div>
+                            </div>
+                        <% }) %>
+                       
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script >
+        document.getElementById('si1').classList.add('sidebar-item-active')
+    </script>
+</body>
+</html>

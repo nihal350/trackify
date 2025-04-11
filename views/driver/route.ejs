@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <title>Trackify</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 95vh;
+            width: 100%;
+        }
+    </style>
+  </head>
+  <body class="">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 offset-0 offset-md-3 offset-lg-4"></div>
+      </div>
+    </div>
+    <p class="cust-top-nav text-center">ROUTE VIEW</p>
+    
+   
+    
+       
+          <div id="map"></div>
+     
+     
+     
+    
+  
+
+    <%- include('../partials/driver-navbar.ejs') %>
+
+    <script>
+      document.getElementById('bn2').classList.add('nav-element-body-selected')
+    </script>
+     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+     <script>
+         // Initialize the map and set its view to a default location
+         var map = L.map('map').setView([11.1668, 75.8768], 15); // Default: India
+ 
+         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+             attribution: '&copy; OpenStreetMap contributors'
+         }).addTo(map);
+ 
+       
+         var x = <%- JSON.stringify(bus.route) %> 
+         var points = []
+         x.forEach((i)=>{
+             points.push({
+                 lat:i.lat,
+                 lon:i.lon,
+                 name:i.location,
+                 color:"yellow"
+             })
+         })
+         points.push(
+             { lat: 11.2195, lon: 75.8999, name: "Safi Institute of Advanced Study", color: "green" }
+         )
+         
+ 
+         var latlngs = points.map(point => [point.lat, point.lon]);
+ 
+         points.forEach(point => {
+             L.circleMarker([point.lat, point.lon], {
+                 color: point.color,
+                 radius: 8,
+                 fillOpacity: 1
+             })
+             .addTo(map)
+             .bindPopup(point.name);
+         });
+ 
+         // Draw route
+         var polyline = L.polyline(latlngs, { color: 'blue', weight: 1 }).addTo(map);
+
+
+
+        
+
+         var defaultLat = '<%=bus.location.lat%>', defaultLng = '<%=bus.location.lon%>'
+        L.marker([defaultLat, defaultLng]).addTo(map)
+            .bindPopup(`You are Here`)
+            .openPopup();
+
+        // Variable to store the last temporary marker
+        var tempMarker = null;
+
+
+ 
+         // Fit map to route
+         map.fitBounds(polyline.getBounds());
+ 
+      </script>
+  </body>
+</html>

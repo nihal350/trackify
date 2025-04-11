@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <title>Trackify</title>
+    <style>
+      .stat-box{
+          border-radius: 15px;
+          width: 100%;
+          padding: 10px 15px;
+          margin-bottom: 15px;
+      }
+      .stats-head{
+          font-size: 20px;
+          font-weight: 700;
+          margin-bottom: 2px;
+      }
+      .stats-count{
+          font-size: 18px;
+          font-weight: 400;
+          margin-bottom: 0;
+      }
+  </style>
+  </head>
+  <body class="">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 offset-0 offset-md-3 offset-lg-4"></div>
+      </div>
+    </div>
+   
+   
+    <p class="cust-top-nav text-center">ALL BUS</p>
+    
+    <div class="container" style="padding-bottom: 80px;">
+      <div class="row mt-4">
+        <% buses.forEach((i)=>{ %>
+            <div class="col-12 col-sm-6 col-md-4 ">                         
+                <div class="stat-box" style="background-color: #fff1b5;">
+                    <table class="table">
+                        <tr>
+                            <td colspan="2">
+                                <p class="stats-head">Bus No : <%=i.busNo%></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Reg No</td>
+                            <td><%=i.regNo%></td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Route</td>
+                            <td><%=i.routeName%></td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>
+                                <% if(i.ongoingTrip){ %>
+                                    <span class="text-success">On Trip</span>
+  
+                                <% }else{ %>
+                                    <span class="text-primary">Currenty not in Trip</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                    </table>
+                    <% if(i.ongoingTrip){ %>
+                      <a href="/user/bus/<%=i.id%>">
+                          <button class="btn btn-outline-primary btn-block">VIEW IN MAP</button>
+                      </a>
+                    <% } %>
+  
+                </div>
+            </div>
+        <% }) %>
+      
+      </div>
+    </div>
+  
+  
+  
+
+    <%- include('../partials/user-navbar.ejs') %>
+
+    <script>
+      document.getElementById('bn1').classList.add('nav-element-body-selected')
+    </script>
+  </body>
+</html>

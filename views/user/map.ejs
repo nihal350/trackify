@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <title>Trackify</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 95vh;
+            width: 100%;
+        }
+    </style>
+  </head>
+  <body style="background-color: #F2EFEA;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 offset-0 offset-md-3 offset-lg-4"></div>
+      </div>
+    </div>
+    <p class="cust-top-nav text-center">LIVE LOCATIONS </p> 
+    <div id="map"></div>
+     
+    
+     
+    
+  
+
+    <%- include('../partials/user-navbar.ejs') %>
+
+    <script>
+      document.getElementById('bn2').classList.add('nav-element-body-selected')
+    </script>
+     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+     <script>
+      var map = L.map('map').setView([11.1668, 75.8768], 9); // Default: India
+
+     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         attribution: '&copy; OpenStreetMap contributors'
+     }).addTo(map);
+
+     var x = <%- JSON.stringify(buses) %> 
+
+     var points = []
+
+     x.forEach((i)=>{
+         console.log('hi')
+         points.push({
+             lat:i.location.lat,
+             lon:i.location.lon,
+             name:`${i.regNo}  (${i.busNo})`
+         })
+     })
+     
+       
+     
+
+     var latlngs = points.map(point => [point.lat, point.lon]);
+
+     points.forEach(point => {
+         L.marker([point.lat, point.lon])
+             .addTo(map)
+             .bindPopup(point.name);
+     });
+
+    
+     console.log(points)
+     // Fit map to route
+     map.fitBounds(polyline.getBounds());
+ </script>
+  </body>
+</html>

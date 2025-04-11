@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bcss/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/icofont/icofont.min.css">
+     
+    <script defer src="/bjs/jquery.min.js"></script>
+    <script defer src="/bjs/bootstrap.bundle.min.js"></script>
+    <title>Trackify</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/admin-nav') %>
+    <div class="app">
+        <div class="row">
+            <div class="col-12 col-md-3 col-lg-2  order-2 order-md-1">
+                <%- include('../partials/admin-sidebar') %>
+            </div>
+            <div class="col-12 col-lg-9  col-lg-10 order-1 order-md-2">
+                <div class="page-view-area">
+                    <div class="nav-adjust"></div>
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-7">
+                            <div class="page-info-div">
+                                <h1 class="page-head">
+                                    Add Stop
+                                </h1>
+                                <p class="mt-2">
+                                    <a class="text-decoration-none text-dark" href="/admin">Home</a>&nbsp;>
+                                    <a class="text-decoration-none text-info" href="#">Add Stop</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12 col-md-5">
+                            <form action="/admin/stop/add" method="post">
+                                <input type="hidden" name="busid" value="<%=bus.id%>">
+                                <div class="mb-3 mt-3">
+                                    <label class="form-label">Stop Name</label>
+                                    <input type="text" class="form-control" name="location" placeholder=""  required/>
+                                </div>
+                                <div class="mb-3 mt-3">
+                                    <label class="form-label">Latitude</label>
+                                    <input type="text" class="form-control" name="lat" placeholder="Select from Map"  value="11.184" readonly required id="lat"/>
+                                </div>
+                                <div class="mb-3 mt-3">
+                                    <label class="form-label">Longitude</label>
+                                    <input type="text" class="form-control" name="lon" placeholder="Select from Map"  value="75.8768" readonly required id="lon"/>
+                                </div>
+                                <p style="color:grey">Select Correct Location in Map</p>
+                                <button class="btn btn-success" type="submit">ADD STOP</button>
+                                
+                            </form>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            <div id="map"></div>
+                            <p id="coordinates">Click on the map to see coordinates.</p>
+                        </div>
+
+                       
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script >
+        document.getElementById('si2').classList.add('sidebar-item-active')
+    </script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map and set its view to a default location
+        var map = L.map('map').setView([11.1668, 75.8768], 10); // Default: India
+
+          // Add OpenStreetMap tile layer
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add a default marker at a predefined location
+        var defaultLat = 11.1840, defaultLng = 75.8768;
+        var lastMarker = L.marker([defaultLat, defaultLng]).addTo(map)
+            .bindPopup(`Location: ${defaultLat}, ${defaultLng}`)
+            .openPopup();
+
+        document.getElementById('coordinates').innerText = `Latitude: ${defaultLat}, Longitude: ${defaultLng}`;
+
+        // Click event to update the marker
+        map.on('click', function (e) {
+            var lat = e.latlng.lat.toFixed(6);
+            var lng = e.latlng.lng.toFixed(6);
+           
+            document.getElementById('lat').value = lat
+            document.getElementById('lon').value = lng
+            // Remove the previous marker
+            if (lastMarker) {
+                map.removeLayer(lastMarker);
+            }
+
+            // Add a new marker
+            lastMarker = L.marker([lat, lng]).addTo(map)
+                .bindPopup(`Coordinates: ${lat}, ${lng}`)
+                .openPopup();
+        });
+</script>
+</body>
+</html>
